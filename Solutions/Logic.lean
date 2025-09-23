@@ -17,11 +17,18 @@ theorem doubleneg_elim :
   ¬ ¬ P → P  := by
   intro nnp
   by_cases h:P
-    Lean.Parser.Tactic.assumption
+  case pos => assumption
+  case neg =>
+  contradiction
 
 theorem doubleneg_law :
   ¬ ¬ P ↔ P  := by
-  sorry
+  apply Iff.intro
+  case mp => exact doubleneg_elim P
+  case mpr =>
+  intro hp
+  intro np
+  contradiction
 
 
 ------------------------------------------------
