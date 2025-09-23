@@ -9,8 +9,7 @@ variable (P Q R : Prop)
 
 theorem doubleneg_intro :
   P → ¬ ¬ P  := by
-  intro p
-  intro h
+  intros p h
   contradiction
 
 theorem doubleneg_elim :
@@ -18,17 +17,16 @@ theorem doubleneg_elim :
   intro nnp
   by_cases h:P
   case pos => assumption
-  case neg =>
-  contradiction
+  case neg => contradiction
 
 theorem doubleneg_law :
   ¬ ¬ P ↔ P  := by
   apply Iff.intro
   case mp => exact doubleneg_elim P
   case mpr =>
-  intro hp
-  intro np
-  contradiction
+    intro hp
+    intro np
+    contradiction
 
 
 ------------------------------------------------
@@ -38,16 +36,19 @@ theorem doubleneg_law :
 theorem disj_comm :
   (P ∨ Q) → (Q ∨ P)  := by
   intro hpq
-  rcases hpq with hp | hq
+  rcases hpq
   case inl => right; assumption
-  case inr =>
-  left
-  assumption
+  case inr => left; assumption
 
 
 theorem conj_comm :
   (P ∧ Q) → (Q ∧ P)  := by
-  sorry
+  intro hpq
+  constructor
+  case left => exact hpq.right
+  case right => exact hpq.left
+
+
 
 
 ------------------------------------------------
@@ -56,11 +57,19 @@ theorem conj_comm :
 
 theorem impl_as_disj_converse :
   (¬ P ∨ Q) → (P → Q)  := by
-  sorry
+  intros npq hp
+  rcases npq with hp | hq
+  case inl => contradiction
+  case inr => assumption
 
 theorem disj_as_impl :
   (P ∨ Q) → (¬ P → Q)  := by
-  sorry
+  intros hpq np
+  rcases hpq with hp | hq
+  case inl => contradiction
+  case inr => assumption
+
+
 
 
 ------------------------------------------------
@@ -69,15 +78,27 @@ theorem disj_as_impl :
 
 theorem impl_as_contrapositive :
   (P → Q) → (¬ Q → ¬ P)  := by
-  sorry
+  intros hpq nq hp
+  have hq: Q := hpq hp
+  contradiction
 
 theorem impl_as_contrapositive_converse :
   (¬ Q → ¬ P) → (P → Q)  := by
-  sorry
+  intros nqp hp
+  by_cases hq: Q
+  case pos => assumption
+  case neg =>
+    have np: ¬P := nqp hq
+    contradiction
+
 
 theorem contrapositive_law :
   (P → Q) ↔ (¬ Q → ¬ P)  := by
-  sorry
+  apply Iff.intro
+  case mp => exact impl_as_contrapositive P Q
+  case mpr => exact impl_as_contrapositive_converse P Q
+
+
 
 
 ------------------------------------------------
@@ -86,7 +107,15 @@ theorem contrapositive_law :
 
 theorem lem_irrefutable :
   ¬ ¬ (P ∨ ¬ P)  := by
-  sorry
+  intro hnpp
+  have h: (P ∨ ¬ P) := by
+    right
+    intro hp
+    apply hnpp
+    left
+    assumption
+  contradiction
+
 
 
 ------------------------------------------------
