@@ -15,7 +15,9 @@ theorem doubleneg_intro :
 
 theorem doubleneg_elim :
   ¬ ¬ P → P  := by
-  sorry
+  intro nnp
+  by_cases h:P
+    Lean.Parser.Tactic.assumption
 
 theorem doubleneg_law :
   ¬ ¬ P ↔ P  := by
