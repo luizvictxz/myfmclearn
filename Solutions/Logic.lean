@@ -157,7 +157,11 @@ theorem impl_linear :
 
 theorem disj_as_negconj :
   P ∨ Q → ¬ (¬ P ∧ ¬ Q)  := by
-  sorry
+  intros hpq hnpq
+  rcases hnpq with ⟨hnp, hnq⟩
+  rcases hpq with hp | hq
+  case inl => contradiction
+  case inr => contradiction
 
 theorem conj_as_negdisj :
   P ∧ Q → ¬ (¬ P ∨ ¬ Q)  := by
