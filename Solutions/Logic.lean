@@ -165,7 +165,11 @@ theorem disj_as_negconj :
 
 theorem conj_as_negdisj :
   P ∧ Q → ¬ (¬ P ∨ ¬ Q)  := by
-  sorry
+  intros hpq hnpq
+  rcases hpq with ⟨hp, hq⟩
+  rcases hnpq with hnp | hnq
+  case inl => contradiction
+  case inr => contradiction
 
 
 ------------------------------------------------
