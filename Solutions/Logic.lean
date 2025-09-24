@@ -128,8 +128,8 @@ theorem peirce_law_weak :
   have hm: (P  → Q) := by
     intro hp
     contradiction
-  have hp:P := hpqip hm
-  contradiction
+  exact hpiq (hpqip hm)
+
 
 
 
@@ -166,10 +166,9 @@ theorem disj_as_negconj :
 theorem conj_as_negdisj :
   P ∧ Q → ¬ (¬ P ∨ ¬ Q)  := by
   intros hpq hnpq
-  rcases hpq with ⟨hp, hq⟩
   rcases hnpq with hnp | hnq
-  case inl => contradiction
-  case inr => contradiction
+  case inl => exact hnp hpq.1
+  case inr => exact hnq hpq.2
 
 
 ------------------------------------------------
@@ -178,7 +177,12 @@ theorem conj_as_negdisj :
 
 theorem demorgan_disj :
   ¬ (P ∨ Q) → (¬ P ∧ ¬ Q)  := by
-  sorry
+  intro hnpq
+  constructor
+  case left =>
+    intro hp
+    ...
+
 
 theorem demorgan_disj_converse :
   (¬ P ∧ ¬ Q) → ¬ (P ∨ Q)  := by
